@@ -17,19 +17,19 @@ else
 fi
 
 error(){
-    echo "${bold}${red}[-]:${normal}${@}"
+    echo "${bold}${red}==> ${normal}${@}"
 }
 
 success(){
-    echo "${bold}${green}[+]:${normal}${@}"
+    echo "${bold}${green}==> ${normal}${@}"
 }
 
 warn(){
-    echo "${bold}${yellow}[!]:${normal}${@}"
+    echo "${bold}${yellow}=> ${normal}${@}"
 }
 
 info(){
-    echo "${bold}${blue}[*]:${normal}${@}"
+    echo "${bold}${blue}=> ${normal}${@}"
 }
 
 exec(){
@@ -45,7 +45,7 @@ exec(){
 require_directory(){ # Creates directory if not exist
     if [ ! -d $1 ]; then
         warn "Directory not found: ${1}. Will create it now."
-        exec "mkdir ${1}"
+        exec "mkdir -p ${1}"
     fi
 }
 
@@ -64,7 +64,7 @@ leave_dir(){
 }
 
 check_equal(){
-    printf "${bold}${blue}[*]:${normal}Checking equality: ${1} and ${2}..."
+    printf "${bold}${blue}=> ${normal}Checking equality: ${1} and ${2}..."
     if ! cmp $1 $2 >/dev/null 2>&1
     then
       printf "${bold}${red}FAILED${normal}\n"
@@ -72,6 +72,21 @@ check_equal(){
     fi
     printf "${bold}${green}OK${normal}\n"
     return 0
+}
+
+include(){
+    if [ -f "$1" ]; then
+      source "$1"
+    else
+      error "Failed to include file: $1"
+      exit -1
+    fi
+}
+
+include_if_exists(){
+    if [ -f "$1" ]; then
+       source "$1"
+    fi
 }
 
 require_equal(){
@@ -84,7 +99,7 @@ require_equal(){
 }
 
 check_command(){
-    printf "${bold}${blue}[*]:${normal}Checking that ${1} avail..."
+    printf "${bold}${blue}=> ${normal}Checking that ${1} avail..."
     if ! [ -x "$(command -v ${1})" ]; then
       printf "${bold}${red}FAILED${normal}\n"
       return -1
@@ -104,25 +119,29 @@ require_command(){
 
 require_root(){
     if [ "$EUID" -ne 0 ]; then 
-      error "Root is required to run this script"
+      error "Root is required to run this build"
       exit -1
     fi
 }
+
+if [ -f "$BASEDIR/Buildfile" ]; then
+   source "$BASEDIR/Buildfile"
+else
+   error "Buildfile not found in local directory!"
+   exit -1
+fi
+
 
 if [ $# -eq 0 ]; then
     error "Please specify target. Use -h option for help."
     exit -1
 fi
 
-source Buildfile
-
 if [[ $1 == "-h" ]]; then
     echo "Usage:"$0" <-h> $USAGE"
     echo "-h        Display this help message and exit."
     exit 0
 fi
-
-
 
 if [[ `type -t "target_${1}"` == "function" ]]; then
      eval "target_${1}"
