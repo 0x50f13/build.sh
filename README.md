@@ -72,4 +72,5 @@ The `build.sh` is tested on Mac OS X 10.15.7 and various Linux distributions(Alp
 # Todos
 * [ ] Add `Dockerfile`
 * [ ] Implement `ifdef`, `ifndef
+* [ ] Incremental builds
 `
