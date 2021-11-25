@@ -74,6 +74,14 @@ check_equal(){
     return 0
 }
 
+def(){          
+  return `[[ -v $1 ]]`
+}
+
+ndef(){
+  return `[[ ! -v $1 ]]`
+}
+
 include(){
     if [ -f "$1" ]; then
       source "$1"
