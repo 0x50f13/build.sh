@@ -3,7 +3,7 @@ build.sh provides a bash framework for building and meta-building complex softwa
 ## Supported platforms
 The `build.sh` is tested on Mac OS X 10.15.7 and various Linux distributions(Alpine, Ubuntu)
 ### Requirements
-  * bash
+  * bash>4.1
   * Terminal with color support is recommended
 ## Quickstart
 ### Installation
