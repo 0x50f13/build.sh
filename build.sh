@@ -74,6 +74,10 @@ check_equal(){
     return 0
 }
 
+define(){
+  `$1=$2`
+}
+
 def(){          
   return `[[ -v $1 ]]`
 }
