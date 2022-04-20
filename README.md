@@ -68,7 +68,10 @@ The `build.sh` is tested on Mac OS X 10.15.7 and various Linux distributions(Alp
   * `require_root` -- check that current user is `root`
   * `require_command <command>` -- check that `<command>` is available in the system
 
-
+### Files operations
+  A files operationns can be done by pattern. 
+  * `copy $pattern $target` -- copies files matching wilecard `$pattern` to `$target` directory.
+  * `move $pattern $target` -- moves files matching wilecard `$pattern` to `$target` directory. 
 # Todos
 * [ ] Add `Dockerfile`
 * [x] Implement `if def`, `if ndef`

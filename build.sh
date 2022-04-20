@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 export PATH=$PATH:/bin/:/sbin/:/usr/sbin/:/usr/bin/
 
@@ -134,6 +134,27 @@ require_root(){
       error "Root is required to run this build"
       exit -1
     fi
+}
+
+# $1 -- pattern
+# $2 -- target
+copy(){
+  mapfile -d $'\0' BUILDSH_MOVE_LIST < <(find . -name "$1" -print0)
+  for f in "${BUILDSH_MOVE_LIST[@]}"
+  do
+    exec "cp '$f' '$2'"
+  done
+}
+
+# $1 -- pattern
+# $2 -- target
+move(){
+  mapfile -d $'\0' BUILDSH_MOVE_LIST < <(find . -name "$1" -print0)
+  info "list is $BUILDSH_MOVE_LIST"
+  for f in "${BUILDSH_MOVE_LIST[@]}"
+  do
+    exec "mv '$f' '$2'"
+  done
 }
 
 if [ -f "$BASEDIR/Buildfile" ]; then
