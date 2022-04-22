@@ -139,21 +139,21 @@ require_root(){
 # $1 -- pattern
 # $2 -- target
 copy(){
-  mapfile -d $'\0' BUILDSH_MOVE_LIST < <(find . -wholename "$1" -print0)
+  BUILDSH_MOVE_LIST=($1)
   for f in "${BUILDSH_MOVE_LIST[@]}"
   do
-    exec "cp '$f' '$2'"
+    exec "cp $f $2"
   done
 }
+
 
 # $1 -- pattern
 # $2 -- target
 move(){
-  mapfile -d $'\0' BUILDSH_MOVE_LIST < <(find . -wholename "$1" -print0)
-  info "list is $BUILDSH_MOVE_LIST"
+  BUILDSH_MOVE_LIST=($1)
   for f in "${BUILDSH_MOVE_LIST[@]}"
   do
-    exec "mv '$f' '$2'"
+    exec "cp $f $2"
   done
 }
 
