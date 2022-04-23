@@ -1,11 +1,17 @@
 #!/usr/bin/env bash
 
+# Update path
 export PATH=$PATH:/bin/:/sbin/:/usr/sbin/:/usr/bin/
 
+# shopt
+shopt -s nullglob
+
+# Set basedir
 BASEDIR=`pwd`
-# echo $BASEDIR
+
 # Colors
 if test -t 1; then
+    HAS_COLORS=true
     bold=$(tput bold)
     normal=$(tput sgr0)
     red=$(tput setaf 1)
@@ -13,23 +19,40 @@ if test -t 1; then
     blue=$(tput setaf 4)
     yellow=$(tput setaf 11)
 else
+    HAS_COLORS=false
     echo "[!]: No colors will be available: not supported."
 fi
 
 error(){
+  if $HAS_COLORS; then
     echo "${bold}${red}==> ${normal}${@}"
+  else
+    echo "[-]: ${@}"
+  fi
 }
 
 success(){
+  if $HAS_COLORS; then
     echo "${bold}${green}==> ${normal}${@}"
+  else
+    echo "[+]: ${@}"
+  fi
 }
 
 warn(){
+  if $HAS_COLORS; then
     echo "${bold}${yellow}=> ${normal}${@}"
+  else
+    echo "[!]: ${@}"
+  fi
 }
 
 info(){
+  if $HAS_COLORS; then
     echo "${bold}${blue}=> ${normal}${@}"
+  else 
+    echo "[*]: ${@}"
+  fi
 }
 
 exec(){
