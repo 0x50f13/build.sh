@@ -109,6 +109,10 @@ ndef(){
   return `[[ ! -v $1 ]]`
 }
 
+undef_fn(){
+  eval "$1(){ echo 1 > /dev/null }"
+}
+
 include(){
     if [ -f "$1" ]; then
       source "$1"
