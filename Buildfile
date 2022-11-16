@@ -1,3 +1,4 @@
+
 target_install(){
   info "Installing to /usr/bin/build"
   require_root

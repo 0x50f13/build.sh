@@ -110,7 +110,17 @@ ndef(){
 }
 
 undef_fn(){
-  eval "$1(){ echo 1 > /dev/null }"
+  unset -f $1
+}
+
+pass(){
+  :
+}
+
+sundef_fn(){
+  eval "function $1 { 
+           pass 
+        }"
 }
 
 include(){
